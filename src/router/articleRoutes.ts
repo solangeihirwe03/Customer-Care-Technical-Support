@@ -5,6 +5,12 @@ import upload from "../helpers/multer"
 
 const router = Router();
 
-router.post("/create-article",userAuthorization, upload.single("imageUrl") , articleController.addArticle)
+router.post("/create-article",
+    userAuthorization, 
+    upload.single("imageUrl") , 
+    articleController.addArticle
+)
+
+router.get("/all-articles", articleController.getAllArticles)
 
 export default router

@@ -5,7 +5,7 @@ import { Request } from "express";
 const fileFilter = (req: Request, file: Express.Multer.File, cb:any)=>{
     const ext = path.extname(file.originalname).toLowerCase();
     if(ext !== ".jpg" && ext !== ".jpeg" && ext !== ".png"){
-        return cb(new Error("Only images are allowed"))
+        return cb(new Error("Only images are allowed"), false)
     }
     cb(null, true)
 };
