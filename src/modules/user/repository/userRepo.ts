@@ -1,6 +1,6 @@
 import Users from "../../../database/models/users";
 
-const createUser = async(body: any)=>{
+const createUser= async(body: any)=>{
     return await Users.create(body)
 };
 

@@ -50,8 +50,10 @@ This project is a backend API for managing articles. Users can create, view, and
         - `user/` : user module.
             - `controller/`: user controllers
             - `repository/`: user repositories
+        - `articles/` : aricle module
+            - `controller/`: article controllers
+            - `repository/`: article repositories
     - `routes/`: API routes.
-    - `services/`: Service functions like sendEmails.
     - `index.ts`: Startup file for all requests.
 
 ## INITIALIZE SEQUELIZE CLI
@@ -59,6 +61,7 @@ This project is a backend API for managing articles. Users can create, view, and
 1. Initialize Sequelize CLI:
     ```sh
     npx sequelize-cli init
+    ```
  
  2. Generate Seeder:
    ```sh
