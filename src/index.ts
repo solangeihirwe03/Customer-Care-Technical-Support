@@ -5,6 +5,8 @@ import router from "./router"
 import cors from "cors"
 import compression from "compression"
 import morgan from "morgan";
+import SwaggerUi from "swagger-ui-express"
+import Document from "../swagger.json"
 
 dotenv.config();
 const app = express();
@@ -15,6 +17,7 @@ app.use(morgan(process.env.NODE_EN || "dev"));
 app.use(compression());
 
 app.use("/api", router)
+app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(Document))
 
 app.get("**", (req:Request, res:Response)=>{
   res.status(httpStatus.OK).json({
