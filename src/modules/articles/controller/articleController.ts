@@ -101,10 +101,31 @@ const userDeleteArticle = async(req:ExtendRequest, res:Response): Promise<any>=>
     }
 }
 
+const userCreateComment = async (req: ExtendRequest, res:Response): Promise<any>=>{
+    try{
+        const comment = await articleRepo.createComments({
+            userId: req.article.userId,
+            articleId:req.params.articleId,
+            comment: req.body.comment
+        })
+        return res.status(httpStatus.CREATED).json({
+            status: httpStatus.CREATED,
+            message: "Comment added successfully",
+            data: {comment}
+        })
+    }catch(error:any){
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+            status: httpStatus.INTERNAL_SERVER_ERROR,
+            error: error.message
+        })
+    }
+}
+
 export default {
     addArticle,
     getAllArticles,
     getOneArticle,
     userUpdateArticle,
-    userDeleteArticle
+    userDeleteArticle,
+    userCreateComment
 }

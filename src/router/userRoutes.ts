@@ -4,7 +4,7 @@ import { Router } from "express"
 
 const router = Router();
 
-router.post("/register-user", isUserExist, userController.registerUser );
-router.post("/login-user", verifyUser, userController.loginUser)
+router.post("/register", isUserExist, userController.registerUser );
+router.post("/login", verifyUser, userController.loginUser)
 
 export default router

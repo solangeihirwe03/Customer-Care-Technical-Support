@@ -60,7 +60,7 @@ const verifyUser = async (req: ExtendRequest, res: Response, next: NextFunction)
 
 const isArticleExist = async(req:ExtendRequest, res:Response, next: NextFunction): Promise<any>=>{
     try{
-        const article = await articleRepo.findArticleByAttributes("id", req.params.id)
+        const article = await articleRepo.findArticleWithComments(req.params.articleId)
 
         if(!article){
             return res.status(httpStatus.NOT_FOUND).json({
@@ -82,7 +82,13 @@ const isArticleOwner = async (req:ExtendRequest, res:Response, next:NextFunction
    try{ 
     const token: any = req.headers["authorization"]?.split(" ")[1]
     const decode : any = decodeToken(token)
-    const article: any = await articleRepo.findArticleByAttributes("id",req.params.id)
+    const article: any = await articleRepo.findArticleByAttributes("articleId",req.params.articleId)
+    if(req.params.articleId){
+        return res.status(httpStatus.NOT_FOUND).json({
+            status: httpStatus.NOT_FOUND,
+            error: "article not found!"
+        })
+    }
     if(decode.id !== article.userId){
         return res.status(httpStatus.BAD_REQUEST).json({
             status:httpStatus.BAD_REQUEST,

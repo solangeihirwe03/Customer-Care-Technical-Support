@@ -14,3 +14,10 @@ export interface IArticles{
     createdAt: Date;
     updatedAt: Date;
 }
+
+export interface Icomments{
+    id: string;
+    userId: string;
+    articleId: string;
+    comment: string;
+}

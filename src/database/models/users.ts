@@ -2,6 +2,7 @@ import { Model, DataTypes, Optional } from "sequelize";
 import sequelizeConnection from "../config/db.config";
 import { hashPassword } from "../../helpers/index";
 import Articles from "./articles";
+import Comments from "./comments";
 
 export interface usersAttributes{
     id: string;
@@ -22,6 +23,7 @@ class Users extends Model<usersAttributes, UsersCreationAttributes> implements u
     declare updatedAt?: Date | undefined;
 
     static associate() {
+        Users.hasMany(Comments, {foreignKey: "userId", as: "comments"})
         Users.hasMany(Articles, {foreignKey: "userId", as: "articles"})
     }
 }

@@ -1,7 +1,8 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
 import Users from "./users";
-import { IArticles } from "src/types";
+import { IArticles } from "../../types";
 import sequelizeConnection from "../config/db.config";
+import Comments from "./comments";
 
 
 class Articles extends Model<IArticles> {
@@ -15,6 +16,7 @@ class Articles extends Model<IArticles> {
 
     static associate() {
         Articles.belongsTo(Users, {foreignKey: "userId", as: "users"});
+        Articles.hasMany(Comments,{foreignKey: "articleId", as: "comments"})
     }
 }
 
