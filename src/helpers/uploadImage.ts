@@ -1,7 +1,4 @@
 import {v2 as cloudinary} from "cloudinary";
-import { config } from "dotenv";
-
-config();
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -9,10 +6,12 @@ cloudinary.config({
     api_secret: process.env.API_SECRET
 });
 
-export const uploadImage = async(fileToUpload: Express.Multer.File) : Promise <{public_id: string, secure_url: string}>=>{
+const uploadImage = async(fileToUpload: Express.Multer.File) : Promise <{public_id: string, secure_url: string}>=>{
     const result = await cloudinary.uploader.upload(fileToUpload.path)
     return {
         public_id: result.public_id,
         secure_url: result.secure_url
     }
 }
+
+export default uploadImage

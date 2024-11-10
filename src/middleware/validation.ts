@@ -1,8 +1,9 @@
-import { Request, Response, NextFunction } from "express"
+import e, { Request, Response, NextFunction } from "express"
 import userRepo from "../modules/user/repository/userRepo";
 import httpStatus from "http-status"
-import { comparePassword } from "../helpers/index";
+import { comparePassword, decodeToken } from "../helpers/index";
 import { ExtendRequest } from "../types";
+import articleRepo from "../modules/articles/repository/articleRepo";
 
 
 const isUserExist = async (req: Request, res: Response, next: NextFunction): Promise<void | any> => {
@@ -57,7 +58,50 @@ const verifyUser = async (req: ExtendRequest, res: Response, next: NextFunction)
     }
 }
 
+const isArticleExist = async(req:ExtendRequest, res:Response, next: NextFunction): Promise<any>=>{
+    try{
+        const article = await articleRepo.findArticleByAttributes("id", req.params.id)
+
+        if(!article){
+            return res.status(httpStatus.NOT_FOUND).json({
+                status: httpStatus.NOT_FOUND,
+                error: "Article not found!"
+            })
+        }
+        req.article = article
+        return next();
+    }catch(error: any){
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+            status: httpStatus.INTERNAL_SERVER_ERROR,
+            error: error.message
+        })
+    }
+}
+
+const isArticleOwner = async (req:ExtendRequest, res:Response, next:NextFunction): Promise<void | any> =>{
+   try{ 
+    const token: any = req.headers["authorization"]?.split(" ")[1]
+    const decode : any = decodeToken(token)
+    const article: any = await articleRepo.findArticleByAttributes("id",req.params.id)
+    if(decode.id !== article.userId){
+        return res.status(httpStatus.BAD_REQUEST).json({
+            status:httpStatus.BAD_REQUEST,
+            error: "you are not authorized to edit or delete this article"
+        })
+    }
+    req.article = article
+    return next()
+   }catch(error: any){
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+        status: httpStatus.INTERNAL_SERVER_ERROR,
+        error: error.message
+    })
+   }
+
+}
 export {
     isUserExist,
-    verifyUser
+    verifyUser,
+    isArticleOwner,
+    isArticleExist
 }
