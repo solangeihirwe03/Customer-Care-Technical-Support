@@ -25,11 +25,23 @@ export default  {
         references: {
           model: "articles",
           key: "id"
-        }
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE"
       },
       comment:{
         type: new DataTypes.STRING(290),
         allowNull: true
+      },
+      createdAt:{
+        type: new DataTypes.DATE,
+        allowNull: true,
+        defaultValue: DataTypes.NOW
+      },
+      updatedAt:{
+        type: new DataTypes.DATE,
+        allowNull: true,
+        defaultValue: DataTypes.NOW
       }
 
     })

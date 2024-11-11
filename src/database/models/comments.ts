@@ -1,4 +1,4 @@
-import { Model, DataTypes } from "sequelize";
+import { Model, DataTypes, Sequelize } from "sequelize";
 import { Icomments } from "../../types";
 import Users from "./users";
 import Articles from "./articles";
@@ -10,9 +10,11 @@ class Comments extends Model<Icomments> {
     declare userId: string;
     declare articleId: string;
     declare comment: string;
+    declare createdAt: Date;
+    declare updatedAt: Date;
 
     static associate() {
-        Comments.belongsTo(Users, { foreignKey: "userId", as: "user" });
+        Comments.belongsTo(Users, { foreignKey: "userId", as: "users" });
         Comments.belongsTo(Articles, { foreignKey: "articleId", as: "articles" })
     }
 }
@@ -48,6 +50,16 @@ Comments.init(
         comment: {
             type: new DataTypes.STRING(290),
             allowNull: true
+        },
+        createdAt:{
+            type: new DataTypes.DATE,
+            allowNull: false,
+            defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
+        },
+        updatedAt:{
+            type: new DataTypes.DATE,
+            allowNull: false,
+            defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
         }
     },
     {

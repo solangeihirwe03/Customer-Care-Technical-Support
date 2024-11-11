@@ -1,6 +1,7 @@
 import Comments from "../../../database/models/comments";
 import Articles from "../../../database/models/articles";
 import Users from "../../../database/models/users";
+import db from "../../../database/models";
 
 const createArticle = async (body: any)=>{
     return await Articles.create(body)
@@ -18,7 +19,7 @@ const findArticleByAttributes = async (key: string, value:any)=>{
 }
 
 const findArticleWithComments = async (articleId:string)=>{
-    return await Articles.findOne(
+    return await db.Articles.findOne(
         {where: {id: articleId},
         include: [
             {
@@ -27,7 +28,7 @@ const findArticleWithComments = async (articleId:string)=>{
                 include: [
                     {
                         model: Users,
-                        as: "user",
+                        as: "users",
                         attributes: ["username"]
                     }
                 ]
@@ -42,10 +43,11 @@ const findArticleAndUpdate = async (
     value: any,
     articleData: any
 )=>{
-    return  await Articles.update(
+    await Articles.update(
         {...articleData},
         {where: {[key]: value}, returning: true}
     );
+    return findArticleWithComments(value)
 }
 
 const findUserIdByArticleId = async (articleId: string)=>{

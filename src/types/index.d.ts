@@ -20,4 +20,6 @@ export interface Icomments{
     userId: string;
     articleId: string;
     comment: string;
+    createdAt: Date;
+    updatedAt: Date;
 }

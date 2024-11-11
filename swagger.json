@@ -25,8 +25,12 @@
             "description": "Authentication Endpoints"
         },
         {
-            "name": "Articles Routes",
+            "name": "Article Routes",
             "description": "Articles Endpoints"
+        },
+        {
+            "name": "Comments Routes",
+            "description": "Comments Endpoint"
         }
     ],
     "schemes": [
@@ -70,13 +74,52 @@
             "Article": {
                 "type": "object",
                 "properties": {
-                    "id": "string",
-                    "userId": "string",
-                    "title": "string",
-                    "description": "string",
-                    "image": "string",
-                    "createdAt": "Date",
-                    "updatedAt": "Date"
+                    "id": {
+                        "type": "string"
+                    },
+                    "userId":{
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description":{
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true
+                    },
+                    "createdAt": {
+                        "type": "Date"
+                    },
+                    "updatedAt": {
+                        "type": "date"
+                    }
+                }
+            },
+            "Comment": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "userId": {
+                        "type": "string"
+                    },
+                    "articleId": {
+                        "type": "string"
+                    },
+                    "comment": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "Date"
+                    },
+                    "updatedAt": {
+                        "type": "Date"
+                    }
                 }
             }
         },
@@ -103,7 +146,7 @@
                 }
             }
         },
-        "/api/user/register-user": {
+        "/api/user/register": {
             "post": {
                 "tags": [
                     "Authentication Routes"
@@ -152,7 +195,7 @@
                                         "data": {
                                             "type": "object",
                                             "properties": {
-                                                "user": {
+                                                "items": {
                                                     "$ref": "#/components/schemas/User"
                                                 }
                                             }
@@ -219,7 +262,7 @@
                 }
             }
         },
-        "/api/user/login-user": {
+        "/api/user/login": {
             "post": {
                 "tags": [
                     "Authentication Routes"
@@ -359,12 +402,18 @@
                                     "title": {
                                         "type": "string"
                                     },
-                                    "content": {
+                                    "description": {
                                         "type": "string"
                                     },
                                     "imageUrl": {
                                         "type": "string",
                                         "format": "binary"
+                                    }
+                                },
+                                "data":{
+                                    "type":"object",
+                                    "items":{
+                                        "$ref":"#/components/schemas/Article"
                                     }
                                 },
                                 "required": [
@@ -532,7 +581,7 @@
                 }
             }
         },
-        "/api/article/article/{id}": {
+        "/api/article/user-get-article/{articleId}": {
             "get": {
                 "tags": [
                     "Article Routes"
@@ -567,7 +616,8 @@
                                         "data": {
                                             "type": "object",
                                             "properties": {
-                                                "article": {
+                                                "type": "object",
+                                                "items": {
                                                     "$ref": "#/components/schemas/Article"
                                                 }
                                             }
@@ -616,7 +666,7 @@
                 }
             }
         },
-        "/api/article/update-article/{id}": {
+        "/api/article/update-article/{articleId}": {
             "put": {
                 "tags": [
                     "Article Routes"
@@ -677,7 +727,8 @@
                                         "data": {
                                             "type": "object",
                                             "properties": {
-                                                "updateArticle": {
+                                                "type": "object",
+                                                "items": {
                                                     "$ref": "#/components/schemas/Article"
                                                 }
                                             }
@@ -744,7 +795,7 @@
                 }
             }
         },
-        "/api/article/delete-article/{id}": {
+        "/api/article/delete-article/{articleId}": {
             "delete": {
                 "tags": [
                     "Article Routes"
@@ -834,6 +885,124 @@
                                         },
                                         "message": {
                                             "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/article/user-comment-article/{articleId}/comments": {
+            "post": {
+                "tags": [
+                    "Comments Routes"
+                ],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "summary": "Post a comment on an article",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the article to comment on"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "comment": {
+                                        "type": "string",
+                                        "example": "This article is very informative!"
+                                    }
+                                },
+                                "required": [
+                                    "comment"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Comment added successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Comment added successfully"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "type": "object",
+                                                "items": {
+                                                    "$ref":"#/components/schemas/Comment"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Article not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Article not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized access"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
                                         }
                                     }
                                 }

@@ -78,12 +78,12 @@ const isArticleExist = async(req:ExtendRequest, res:Response, next: NextFunction
     }
 }
 
-const isArticleOwner = async (req:ExtendRequest, res:Response, next:NextFunction): Promise<void | any> =>{
+const isArticleOwner = async (req:ExtendRequest, res:Response, next:NextFunction): Promise<any> =>{
    try{ 
     const token: any = req.headers["authorization"]?.split(" ")[1]
     const decode : any = decodeToken(token)
-    const article: any = await articleRepo.findArticleByAttributes("articleId",req.params.articleId)
-    if(req.params.articleId){
+    const article: any = await articleRepo.findArticleByAttributes("id",req.params.articleId)
+    if(!req.params.articleId){
         return res.status(httpStatus.NOT_FOUND).json({
             status: httpStatus.NOT_FOUND,
             error: "article not found!"

@@ -13,7 +13,7 @@ router.post("/create-article",
 )
 
 router.get("/all-articles", articleController.getAllArticles)
-router.get("/article/:articleId",
+router.get("/user-get-article/:articleId",
     isArticleExist, 
     articleController.getOneArticle
 )
@@ -30,7 +30,7 @@ router.delete("/delete-article/:articleId",
     articleController.userDeleteArticle
 )
 
-router.post("/article/:articleId/comment",
+router.post("/user-comment-article/:articleId/comments",
     userAuthorization, 
     isArticleExist, 
     articleController.userCreateComment 

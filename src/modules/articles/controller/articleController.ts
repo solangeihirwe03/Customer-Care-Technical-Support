@@ -69,11 +69,11 @@ const userUpdateArticle = async (req: ExtendRequest, res:Response): Promise <any
             const upload = await uploadImage(req.file);
             updatedArticleData.image = upload.secure_url;
         }
-        const updateArticle = await articleRepo.findArticleAndUpdate("id",req.params.id, updatedArticleData)
+        const updateArticle = await articleRepo.findArticleAndUpdate("id",req.params.articleId, updatedArticleData)
 
         return res.status(httpStatus.OK).json({
             status:httpStatus.OK,
-            message: "Artice updated successfullty!",
+            message: "Article updated successfullty!",
             data: {
                 updateArticle
             }
@@ -88,8 +88,8 @@ const userUpdateArticle = async (req: ExtendRequest, res:Response): Promise <any
 
 const userDeleteArticle = async(req:ExtendRequest, res:Response): Promise<any>=>{
     try{
-        const deleteArticle = await articleRepo.destroyArticleById(req.params.id)
-        res.status(httpStatus.OK).json({
+        await articleRepo.destroyArticleById(req.params.articleId)
+        return res.status(httpStatus.OK).json({
             status: httpStatus.OK,
             message: "Article deleted successfully"
         })
