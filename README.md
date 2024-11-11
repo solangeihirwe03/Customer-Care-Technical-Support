@@ -18,9 +18,13 @@ https://github.com/solangeihirwe03/Customer-Care-Technical-Support.git
 
 ## Feature
 
+- Register user
+- Login user
+- Create a new article
 - View all articles
 - View a single article by ID
-- Create a new article
+- Update article by ID
+- Delete article by ID
 - Add comments to an article
 
 ## Getting started
