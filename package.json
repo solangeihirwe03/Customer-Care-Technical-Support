@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
     "createAllTables": "tsc && npx sequelize-cli db:migrate",
     "deleteAllTables": "tsc && npx sequelize-cli db:migrate:undo:all",
