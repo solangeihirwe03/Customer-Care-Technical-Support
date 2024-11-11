@@ -63,23 +63,14 @@ This project is a backend API for managing articles. Users can create, view, and
     npx sequelize-cli init
     ```
  
- 2. Generate Seeder:
-   ```sh
-   npx sequelize-cli seed:generate --name name-of-your-seeder
-   ```
-3. Generate Migrations:
+2. Generate Migrations:
    ```sh
    npx sequelize-cli migration:generate --name name-of-your-migration
    ```
-4. Define Migration:
+3. Define Migration:
    Edit the generated migration file to include the tables you want to create.
-5. Define Seeder Data:
-   Edit the generated seeder file to include the data you want to insert.
-6. Run the Seeder:
-   ```sh
-   npm run createAllSeeders
-   ```
-7. Run the Migration:
+
+4. Run the Migration:
    ```sh
    npm run createAllTables
    ```
