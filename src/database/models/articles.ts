@@ -43,7 +43,7 @@ Articles.init(
             allowNull: false,
         },
         description:{
-            type: DataTypes.UUID,
+            type: DataTypes.STRING(512),
             allowNull: false
         },
         imageUrl: {

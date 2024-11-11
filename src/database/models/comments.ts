@@ -48,7 +48,7 @@ Comments.init(
             onUpdate: "CASCADE"
         },
         comment: {
-            type: new DataTypes.STRING(290),
+            type: new DataTypes.STRING(512),
             allowNull: true
         },
         createdAt:{

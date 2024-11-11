@@ -24,7 +24,7 @@ export default {
         allowNull: false
       },
       description:{
-        type: new DataTypes.STRING(256),
+        type: new DataTypes.STRING(512),
         allowNull: true
       },
       imageUrl:{
