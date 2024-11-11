@@ -77,13 +77,13 @@
                     "id": {
                         "type": "string"
                     },
-                    "userId":{
+                    "userId": {
                         "type": "string"
                     },
                     "title": {
                         "type": "string"
                     },
-                    "description":{
+                    "description": {
                         "type": "string"
                     },
                     "image": {
@@ -410,15 +410,9 @@
                                         "format": "binary"
                                     }
                                 },
-                                "data":{
-                                    "type":"object",
-                                    "items":{
-                                        "$ref":"#/components/schemas/Article"
-                                    }
-                                },
                                 "required": [
                                     "title",
-                                    "content"
+                                    "description"
                                 ]
                             }
                         }
@@ -441,7 +435,7 @@
                                         "data": {
                                             "type": "object",
                                             "properties": {
-                                                "article": {
+                                                "items": {
                                                     "$ref": "#/components/schemas/Article"
                                                 }
                                             }
@@ -586,16 +580,16 @@
                 "tags": [
                     "Article Routes"
                 ],
-                "summary": "Get a single article by ID",
-                "description": "This endpoint allows users to fetch a specific article by its ID.",
+                "summary": "Get one article",
+                "description": "This endpoint allows users to retrieve a specific article by its ID, along with any comments associated with it.",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "articleId",
                         "in": "path",
                         "required": true,
-                        "description": "The ID of the article to fetch",
+                        "description": "ID of the article to retrieve",
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         }
                     }
                 ],
@@ -608,15 +602,16 @@
                                     "type": "object",
                                     "properties": {
                                         "status": {
-                                            "type": "integer"
+                                            "type": "integer",
+                                            "example": 200
                                         },
                                         "message": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "Article retrieved successfully"
                                         },
                                         "data": {
                                             "type": "object",
                                             "properties": {
-                                                "type": "object",
                                                 "items": {
                                                     "$ref": "#/components/schemas/Article"
                                                 }
@@ -635,10 +630,12 @@
                                     "type": "object",
                                     "properties": {
                                         "status": {
-                                            "type": "integer"
+                                            "type": "integer",
+                                            "example": 404
                                         },
                                         "error": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "Article not found!"
                                         }
                                     }
                                 }
@@ -653,10 +650,12 @@
                                     "type": "object",
                                     "properties": {
                                         "status": {
-                                            "type": "integer"
+                                            "type": "integer",
+                                            "example": 500
                                         },
                                         "message": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "Internal server error"
                                         }
                                     }
                                 }
@@ -671,45 +670,50 @@
                 "tags": [
                     "Article Routes"
                 ],
+                "summary": "Update an article",
+                "description": "This endpoint allows users to update an existing article by its ID. Only the article owner is authorized to perform this action. Optionally, an image file can be included.",
+                "parameters": [
+                    {
+                        "name": "articleId",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID of the article to update",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "security": [
                     {
                         "bearerAuth": []
                     }
                 ],
-                "summary": "Update an article",
-                "description": "This endpoint allows users to update an existing article by its ID. Users must be the owner of the article to update it.",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "description": "The ID of the article to update",
-                        "schema": {
-                            "type": "integer"
+                "requestBody": {
+                    "description": "Updated article details",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Updated article title"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Updated article description"
+                                    },
+                                    "imageUrl": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "description": "Image file to update the article's image (optional)"
+                                    }
+                                }
+                            }
                         }
-                    },
-                    {
-                        "name": "imageUrl",
-                        "in": "formData",
-                        "description": "Image file to upload for the article",
-                        "required": false,
-                        "type": "file"
-                    },
-                    {
-                        "name": "title",
-                        "in": "formData",
-                        "description": "The title of the article",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "content",
-                        "in": "formData",
-                        "description": "The content of the article",
-                        "required": false,
-                        "type": "string"
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "Article updated successfully",
@@ -719,16 +723,17 @@
                                     "type": "object",
                                     "properties": {
                                         "status": {
-                                            "type": "integer"
+                                            "type": "integer",
+                                            "example": 200
                                         },
                                         "message": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "Article updated successfully!"
                                         },
                                         "data": {
                                             "type": "object",
                                             "properties": {
-                                                "type": "object",
-                                                "items": {
+                                                "updateArticle": {
                                                     "$ref": "#/components/schemas/Article"
                                                 }
                                             }
@@ -739,17 +744,19 @@
                         }
                     },
                     "400": {
-                        "description": "Bad request, unauthorized to edit this article",
+                        "description": "Unauthorized or validation error",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "object",
                                     "properties": {
                                         "status": {
-                                            "type": "integer"
+                                            "type": "integer",
+                                            "example": 400
                                         },
                                         "error": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "You are not authorized to edit or delete this article"
                                         }
                                     }
                                 }
@@ -764,10 +771,12 @@
                                     "type": "object",
                                     "properties": {
                                         "status": {
-                                            "type": "integer"
+                                            "type": "integer",
+                                            "example": 404
                                         },
                                         "error": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "Article not found!"
                                         }
                                     }
                                 }
@@ -782,10 +791,12 @@
                                     "type": "object",
                                     "properties": {
                                         "status": {
-                                            "type": "integer"
+                                            "type": "integer",
+                                            "example": 500
                                         },
                                         "message": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "Internal server error"
                                         }
                                     }
                                 }
@@ -800,22 +811,22 @@
                 "tags": [
                     "Article Routes"
                 ],
+                "summary": "Delete an article",
+                "description": "This endpoint allows users to delete an existing article by its ID. Only the article owner is authorized to perform this action.",
+                "parameters": [
+                    {
+                        "name": "articleId",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID of the article to delete",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "security": [
                     {
                         "bearerAuth": []
-                    }
-                ],
-                "summary": "Delete an article",
-                "description": "This endpoint allows users to delete an article by its ID. The article must exist, and the user must be the owner of the article to delete it.",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "description": "The ID of the article to delete",
-                        "schema": {
-                            "type": "integer"
-                        }
                     }
                 ],
                 "responses": {
@@ -827,10 +838,12 @@
                                     "type": "object",
                                     "properties": {
                                         "status": {
-                                            "type": "integer"
+                                            "type": "integer",
+                                            "example": 200
                                         },
                                         "message": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "Article deleted successfully"
                                         }
                                     }
                                 }
@@ -838,17 +851,19 @@
                         }
                     },
                     "400": {
-                        "description": "Bad request, unauthorized to delete this article or article not found",
+                        "description": "Unauthorized access",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "object",
                                     "properties": {
                                         "status": {
-                                            "type": "integer"
+                                            "type": "integer",
+                                            "example": 400
                                         },
                                         "error": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "You are not authorized to edit or delete this article"
                                         }
                                     }
                                 }
@@ -863,10 +878,12 @@
                                     "type": "object",
                                     "properties": {
                                         "status": {
-                                            "type": "integer"
+                                            "type": "integer",
+                                            "example": 404
                                         },
                                         "error": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "Article not found!"
                                         }
                                     }
                                 }
@@ -881,10 +898,12 @@
                                     "type": "object",
                                     "properties": {
                                         "status": {
-                                            "type": "integer"
+                                            "type": "integer",
+                                            "example": 500
                                         },
                                         "message": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "Internal server error"
                                         }
                                     }
                                 }
@@ -897,23 +916,24 @@
         "/api/article/user-comment-article/{articleId}/comments": {
             "post": {
                 "tags": [
-                    "Comments Routes"
+                    "Article Routes"
+                ],
+                "summary": "Add a comment to an article",
+                "description": "This endpoint allows authenticated users to add a comment to an article specified by its ID.",
+                "parameters": [
+                    {
+                        "name": "articleId",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID of the article to comment on",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
                 ],
                 "security": [
                     {
-                        "BearerAuth": []
-                    }
-                ],
-                "summary": "Post a comment on an article",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "ID of the article to comment on"
+                        "bearerAuth": []
                     }
                 ],
                 "requestBody": {
@@ -925,7 +945,8 @@
                                 "properties": {
                                     "comment": {
                                         "type": "string",
-                                        "example": "This article is very informative!"
+                                        "description": "Content of the comment",
+                                        "example": "This is a great article!"
                                     }
                                 },
                                 "required": [
@@ -943,6 +964,10 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 201
+                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "Comment added successfully"
@@ -950,9 +975,8 @@
                                         "data": {
                                             "type": "object",
                                             "properties": {
-                                                "type": "object",
-                                                "items": {
-                                                    "$ref":"#/components/schemas/Comment"
+                                                "comment": {
+                                                    "$ref": "#/components/schemas/Comment"
                                                 }
                                             }
                                         }
@@ -968,25 +992,13 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
                                         "error": {
                                             "type": "string",
-                                            "example": "Article not found"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Unauthorized access"
+                                            "example": "Article not found!"
                                         }
                                     }
                                 }
@@ -1000,9 +1012,13 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
                                         "error": {
                                             "type": "string",
-                                            "example": "An unexpected error occurred"
+                                            "example": "Internal server error"
                                         }
                                     }
                                 }
