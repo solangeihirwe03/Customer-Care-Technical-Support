@@ -2,6 +2,20 @@
 
 This project is a backend API for managing articles. Users can create, view, and comment on articles. Built using **TypeScript**, **Node.js**, and **Express**.
 
+## HOSTED SERVER URL
+
+https://customer-care-technical-support.onrender.com/
+
+#### HOSTED SWAGGER DOCUMENTATION
+
+https://customer-care-technical-support.onrender.com/api-docs
+
+
+#### GITHUB REPOSITORY FOR CUSTOMER-CARE-TECHNICAL-SUPPORT
+
+https://github.com/solangeihirwe03/Customer-Care-Technical-Support.git
+
+
 ## Feature
 
 - View all articles
@@ -43,6 +57,7 @@ This project is a backend API for managing articles. Users can create, view, and
 - `src/` : Source code directory.
     - `database/`: Database related files.
         - `config/`: Database connectivity configuration.
+        - `migrations`: Sequelize migrations.
         - `models/`: Sequelize models.
     - `helpers/`: Utility functions.
     - `middlewares/`: Middleware functions

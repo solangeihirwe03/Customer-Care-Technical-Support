@@ -13,7 +13,7 @@
         }
     },
     "host": "localhost:3000",
-    "host-live": "",
+    "host-live": "https://customer-care-technical-support.onrender.com",
     "basePath": "/api",
     "tags": [
         {
