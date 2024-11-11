@@ -74,3 +74,7 @@ This project is a backend API for managing articles. Users can create, view, and
    ```sh
    npm run createAllTables
    ```
+5. Delete the Migration:
+   ```sh
+   npm run deleteAllTables
+   ```
