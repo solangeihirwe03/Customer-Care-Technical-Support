@@ -11,7 +11,7 @@ const sequelizeConfig = {
         ...commonDatabaseConfig,
         url: process.env.DATABASE_URL_DEV
     },
-    production: {
+    prod: {
         ...commonDatabaseConfig,
         url: process.env.DATABASE_URL_PRO,
         dialectOptions: {
