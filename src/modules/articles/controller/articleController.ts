@@ -67,7 +67,7 @@ const userUpdateArticle = async (req: ExtendRequest, res:Response): Promise <any
         }
         if (req.file) {
             const upload = await uploadImage(req.file);
-            updatedArticleData.image = upload.secure_url;
+            updatedArticleData.imageUrl = upload.secure_url;
         }
         const updateArticle = await articleRepo.findArticleAndUpdate("id",req.params.articleId, updatedArticleData)
 
