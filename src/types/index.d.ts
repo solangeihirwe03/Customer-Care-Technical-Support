@@ -23,3 +23,12 @@ export interface Icomments{
     createdAt: Date;
     updatedAt: Date;
 }
+
+export interface IMessages{
+    id: string;
+    username: string;
+    email: string;
+    message: string;
+    createdAt:Date;
+    updatedAt:Date;
+}
